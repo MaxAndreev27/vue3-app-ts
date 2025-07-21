@@ -7,5 +7,5 @@ const layout = computed(() => route.meta.layout);
 </script>
 
 <template>
-    <component :is="layout" />
+    <component :is="layout" v-if="layout" />
 </template>

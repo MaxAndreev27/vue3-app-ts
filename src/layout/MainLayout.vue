@@ -5,7 +5,6 @@ import TheNavbar from '@/components/TheNavbar.vue';
 <template>
     <TheNavbar />
     <div class="container with-nav">
-        <div>Main Layout from layout</div>
         <router-view />
     </div>
 </template>
