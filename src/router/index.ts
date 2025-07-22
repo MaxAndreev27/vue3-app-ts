@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import MainLayout from '@/layout/MainLayout.vue';
 import AuthLayout from '@/layout/AuthLayout.vue';
+import store from '@/store';
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -10,6 +11,7 @@ const routes: Array<RouteRecordRaw> = [
         component: HomeView,
         meta: {
             layout: MainLayout,
+            auth: true,
         },
     },
     {
@@ -18,6 +20,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/HelpView.vue'),
         meta: {
             layout: MainLayout,
+            auth: true,
         },
     },
     {
@@ -26,6 +29,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/AuthView.vue'),
         meta: {
             layout: AuthLayout,
+            auth: false,
         },
     },
 ];
@@ -33,6 +37,17 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes,
+});
+
+router.beforeEach((to, from, next) => {
+    const requiresAuth = to.meta.auth;
+    if (requiresAuth && store.getters['auth/isAuthenticated']) {
+        next();
+    } else if (requiresAuth && !store.getters['auth/isAuthenticated']) {
+        next('/auth?message=auth');
+    } else {
+        next();
+    }
 });
 
 export default router;

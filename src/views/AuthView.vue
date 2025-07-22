@@ -1,10 +1,40 @@
-<script lang="ts">
-import { useLoginForm } from '../use/login-form';
-export default {
-    setup() {
-        return { ...useLoginForm() };
-    },
-};
+<script setup lang="ts">
+import { computed, watch } from 'vue';
+import * as yup from 'yup';
+import { useField, useForm } from 'vee-validate';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const store = useStore();
+
+const { handleSubmit, isSubmitting, submitCount } = useForm();
+
+const {
+    value: email,
+    errorMessage: eError,
+    handleBlur: eBlur,
+} = useField('email', yup.string().trim().required().email());
+
+const {
+    value: password,
+    errorMessage: pError,
+    handleBlur: pBlur,
+} = useField('password', yup.string().trim().required().min(6));
+
+const isTooManyAttempts = computed(() => submitCount.value >= 3);
+
+watch(isTooManyAttempts, (val) => {
+    if (val) {
+        setTimeout(() => (submitCount.value = 0), 2000);
+    }
+});
+
+const onSubmit = handleSubmit(async (values) => {
+    console.log('Submitting', values);
+    await store.dispatch('auth/login', values);
+    router.push('/');
+});
 </script>
 
 <template>
