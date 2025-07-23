@@ -31,7 +31,6 @@ watch(isTooManyAttempts, (val) => {
 });
 
 const onSubmit = handleSubmit(async (values) => {
-    console.log('Submitting', values);
     await store.dispatch('auth/login', values);
     router.push('/');
 });

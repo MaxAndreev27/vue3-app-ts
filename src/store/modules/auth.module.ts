@@ -1,4 +1,5 @@
 import { Commit } from 'vuex';
+import axios from 'axios';
 
 const TOKEN_KEY = 'jwt-token';
 
@@ -36,7 +37,17 @@ export default {
     },
     actions: {
         async login({ commit }: { commit: Commit }, payload: IPayload) {
-            commit('setToken', 'TEST_TOKEN');
+            const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.VUE_APP_FIREBASE_API_KEY}`;
+            try {
+                const data = await axios.post(url, {
+                    email: payload.email,
+                    password: payload.password,
+                });
+                // commit('setToken', 'TEST_TOKEN');
+                console.log(data);
+            } catch (e) {
+                console.log('Error:' + e);
+            }
         },
     },
 };
