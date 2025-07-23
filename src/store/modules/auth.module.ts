@@ -1,5 +1,6 @@
-import { Commit } from 'vuex';
+import { Commit, Dispatch } from 'vuex';
 import axios from 'axios';
+import { ERROR_CODES } from '@/utils/error';
 
 const TOKEN_KEY = 'jwt-token';
 
@@ -36,17 +37,32 @@ export default {
         },
     },
     actions: {
-        async login({ commit }: { commit: Commit }, payload: IPayload) {
+        async login(
+            { commit, dispatch }: { commit: Commit; dispatch: Dispatch },
+            payload: IPayload,
+        ) {
             const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.VUE_APP_FIREBASE_API_KEY}`;
             try {
-                const data = await axios.post(url, {
+                const { data } = await axios.post(url, {
                     email: payload.email,
                     password: payload.password,
+                    returnSecureToken: true,
                 });
-                // commit('setToken', 'TEST_TOKEN');
-                console.log(data);
+                commit('setToken', data.idToken);
+                commit('clearMessage', null, { root: true });
+                console.log(data.idToken);
             } catch (e) {
-                console.log('Error:' + e);
+                console.log(e);
+                dispatch(
+                    'setMessage',
+                    {
+                        value: ERROR_CODES.INVALID_LOGIN_CREDENTIALS,
+                        type: 'danger',
+                    },
+                    { root: true },
+                );
+                // console.log(errorTranslate(e.response.data.error.message));
+                throw new Error();
             }
         },
     },
