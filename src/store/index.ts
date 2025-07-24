@@ -28,9 +28,9 @@ export default createStore({
     actions: {
         setMessage({ commit }: { commit: Commit }, payload) {
             commit('setMessage', payload);
-            // setTimeout(() => {
-            //     commit('clearMessage');
-            // }, 5000);
+            setTimeout(() => {
+                commit('clearMessage');
+            }, 5000);
         },
     },
     modules: {

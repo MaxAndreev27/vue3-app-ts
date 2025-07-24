@@ -5,28 +5,16 @@ import { computed } from 'vue';
 const store = useStore();
 const message = computed(() => store.state.message);
 
-interface I_TITLE_MAP {
-    primary: string;
-    danger: string;
-    warning: string;
+enum TITLE_MAP {
+    primary = 'Успіх!' as any,
+    danger = 'Помилка!' as any,
+    warning = 'Увага!' as any,
 }
 
-const TITLE_MAP: I_TITLE_MAP = {
-    primary: 'Успешно!',
-    danger: 'Ошибка!',
-    warning: 'Внимание!',
-};
-
-type keyType = 'primary' | ' danger' | 'warning';
-
-// const title = computed(() => {
-//     return message.value ? TITLE_MAP[message.value.type as keyType] : null;
-// });
 const title = computed(() => {
-    return message.value ? TITLE_MAP['danger'] : null;
+    return message.value ? TITLE_MAP[message.value.type] : null;
 });
 
-// const title = computed(() => (message.value ? message.value.type : null));
 function close() {
     store.commit('clearMessage');
 }

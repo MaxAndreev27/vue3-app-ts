@@ -9,10 +9,14 @@ export const ERROR_CODES: IError = {
     INVALID_LOGIN_CREDENTIALS: 'Невірний логін або пароль',
     EMAIL_NOT_FOUND: 'Пользователь с таким email не был найден',
     INVALID_PASSWORD: 'Пароль неверный',
-    auth: 'Пожалуйста войдите в систему',
+    auth: 'Будь ласка, увійдить в систему',
 };
 
-type codeType = 'INVALID_LOGIN_CREDENTIALS' | 'EMAIL_NOT_FOUND' | 'INVALID_PASSWORD' | 'auth';
+export type codeType =
+    | 'INVALID_LOGIN_CREDENTIALS'
+    | 'EMAIL_NOT_FOUND'
+    | 'INVALID_PASSWORD'
+    | 'auth';
 
 export function errorTranslate(code: codeType) {
     return ERROR_CODES[code] ? ERROR_CODES[code] : 'Неизвестная ошибка';

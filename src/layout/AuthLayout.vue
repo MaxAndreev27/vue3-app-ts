@@ -1,5 +1,22 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 import AppMessage from '@/components/ui/AppMessage.vue';
+import { codeType, errorTranslate } from '@/utils/error';
+
+const route = useRoute();
+const store = useStore();
+console.log(route.query);
+if (route.query.message) {
+    store.dispatch(
+        'setMessage',
+        {
+            value: errorTranslate(route.query.message as codeType),
+            type: 'warning',
+        },
+        { root: true },
+    );
+}
 </script>
 
 <template>
