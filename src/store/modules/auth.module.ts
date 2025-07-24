@@ -50,9 +50,7 @@ export default {
                 });
                 commit('setToken', data.idToken);
                 commit('clearMessage', null, { root: true });
-                console.log(data.idToken);
             } catch (e) {
-                console.log(e);
                 dispatch(
                     'setMessage',
                     {
@@ -61,7 +59,6 @@ export default {
                     },
                     { root: true },
                 );
-                // console.log(errorTranslate(e.response.data.error.message));
                 throw new Error();
             }
         },

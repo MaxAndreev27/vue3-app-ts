@@ -1,11 +1,11 @@
-<template>
-    <div class="about">
-        <h1>HelpView Page</h1>
-    </div>
-</template>
-
-<script>
-export default {
-    name: 'AboutView',
-};
+<script setup lang="ts">
+import AppPage from '@/components/ui/AppPage.vue';
 </script>
+
+<template>
+    <AppPage title="Help">
+        <ul>
+            <li>Help me</li>
+        </ul>
+    </AppPage>
+</template>
