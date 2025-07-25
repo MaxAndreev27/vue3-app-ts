@@ -1,4 +1,47 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useField, useForm } from 'vee-validate';
+import * as yup from 'yup';
+import { useStore } from 'vuex';
+import { defineEmits } from 'vue';
+import { TaskStatus } from '@/store/modules/request.module';
+
+const { handleSubmit, isSubmitting } = useForm({
+    initialValues: {
+        status: TaskStatus.ACTIVE,
+    },
+});
+
+const {
+    value: fio,
+    errorMessage: fError,
+    handleBlur: fBlur,
+} = useField('fio', yup.string().trim().required('Введіть ПІБ'));
+
+const {
+    value: phone,
+    errorMessage: pError,
+    handleBlur: pBlur,
+} = useField('phone', yup.string().trim().required('Введіть телефон'));
+
+const {
+    value: amount,
+    errorMessage: aError,
+    handleBlur: aBlur,
+} = useField(
+    'amount',
+    yup.number().required('Введіть сумму').min(0, 'Сумма повинна бути більше 0'),
+);
+
+const { value: status } = useField('status');
+
+const store = useStore();
+const emit = defineEmits(['created']);
+
+const onSubmit = handleSubmit(async (values) => {
+    await store.dispatch('request/create', values);
+    emit('created');
+});
+</script>
 
 <template>
     <form @submit.prevent="onSubmit">
@@ -23,10 +66,10 @@
         <div class="form-control">
             <label for="status">Статус</label>
             <select id="status" v-model="status">
-                <option value="done">Завершен</option>
-                <option value="cancelled">Отменен</option>
-                <option value="active">Активен</option>
-                <option value="pending">Выполняется</option>
+                <option :value="TaskStatus.DONE">Завершен</option>
+                <option :value="TaskStatus.CANCELLED">Отменен</option>
+                <option :value="TaskStatus.ACTIVE">Активен</option>
+                <option :value="TaskStatus.PENDING">Выполняется</option>
             </select>
         </div>
 

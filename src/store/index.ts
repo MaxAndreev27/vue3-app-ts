@@ -1,5 +1,6 @@
 import { createStore, createLogger, Commit } from 'vuex';
 import authModule from './modules/auth.module';
+import requestModule from './modules/request.module';
 
 const plugins = [];
 
@@ -13,6 +14,10 @@ interface GlobalState {
 
 export default createStore({
     plugins,
+    modules: {
+        auth: authModule,
+        request: requestModule,
+    },
     state: {
         message: null,
     },
@@ -28,12 +33,9 @@ export default createStore({
     actions: {
         setMessage({ commit }: { commit: Commit }, payload) {
             commit('setMessage', payload);
-            setTimeout(() => {
-                commit('clearMessage');
-            }, 5000);
+            // setTimeout(() => {
+            //     commit('clearMessage');
+            // }, 5000);
         },
-    },
-    modules: {
-        auth: authModule,
     },
 });
