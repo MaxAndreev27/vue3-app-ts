@@ -6,7 +6,6 @@ import { codeType, errorTranslate } from '@/utils/error';
 
 const route = useRoute();
 const store = useStore();
-console.log(route.query);
 if (route.query.message) {
     store.dispatch(
         'setMessage',

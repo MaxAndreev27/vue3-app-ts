@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
 import { currency } from '@/utils/currency';
+import AppStatus from '@/components/ui/AppStatus.vue';
 const props = defineProps({
     requests: {
         type: Array,
@@ -27,7 +28,7 @@ const props = defineProps({
                 <td>{{ r.fio }}</td>
                 <td>{{ r.phone }}</td>
                 <td>{{ currency(r.amount) }}</td>
-                <td>{{ r.status }}</td>
+                <td><AppStatus :type="r.status" /></td>
                 <td>
                     <!--                    <router-link-->
                     <!--                        v-slot="{ navigate }"-->

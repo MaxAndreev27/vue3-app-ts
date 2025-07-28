@@ -1,5 +1,4 @@
-import { Commit, Dispatch, Getter } from 'vuex';
-import store from '@/store';
+import { Commit, Dispatch } from 'vuex';
 import axios from '../../axios/request';
 
 interface RequestState {
@@ -13,7 +12,7 @@ export enum TaskStatus {
     PENDING = 'pending',
 }
 
-interface IPayload {
+export interface IPayload {
     fio: string;
     phone: string;
     amount: number;
@@ -31,10 +30,10 @@ export default {
         },
     },
     mutations: {
-        setRequests(state: RequestState, requests: Array<any>) {
+        setRequests(state: RequestState, requests: Array<IPayload>) {
             state.requests = requests;
         },
-        addRequest(state: RequestState, request: Array<any>) {
+        addRequest(state: RequestState, request: Array<IPayload>) {
             state.requests.push(request);
         },
     },
@@ -43,9 +42,8 @@ export default {
             {
                 commit,
                 dispatch,
-                getters,
                 rootGetters,
-            }: { dispatch: Dispatch; commit: Commit; getters: any; rootGetters: any },
+            }: { dispatch: Dispatch; commit: Commit; rootGetters: any },
             payload: IPayload,
         ) {
             try {
@@ -56,7 +54,6 @@ export default {
                     amount: payload.amount,
                     status: payload.status,
                 });
-                console.log(data);
                 commit('addRequest', { ...payload, id: data.name });
                 dispatch(
                     'setMessage',
@@ -80,18 +77,16 @@ export default {
         async load({
             commit,
             dispatch,
-            getters,
+
             rootGetters,
         }: {
             dispatch: Dispatch;
             commit: Commit;
-            getters: any;
             rootGetters: any;
         }) {
             try {
                 const token = rootGetters['auth/getToken'];
                 const { data } = await axios.get(`/requests.json?auth=${token}`);
-                console.log(data);
                 const requests = Object.keys(data).map((id) => ({ ...data[id], id }));
                 commit('setRequests', requests);
             } catch (e) {
