@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
+import { currency } from '@/utils/currency';
 const props = defineProps({
     requests: {
         type: Array,
@@ -21,13 +22,21 @@ const props = defineProps({
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>c1</td>
-                <td>c2</td>
-                <td>c3</td>
-                <td>c4</td>
-                <td>c5</td>
-                <td>c6</td>
+            <tr v-for="(r, idx) in requests" :key="r.id">
+                <td>{{ idx + 1 }}</td>
+                <td>{{ r.fio }}</td>
+                <td>{{ r.phone }}</td>
+                <td>{{ currency(r.amount) }}</td>
+                <td>{{ r.status }}</td>
+                <td>
+                    <!--                    <router-link-->
+                    <!--                        v-slot="{ navigate }"-->
+                    <!--                        custom-->
+                    <!--                        :to="{ name: 'Request', params: { id: r.id } }"-->
+                    <!--                    >-->
+                    <button class="btn" @click="navigate">Открыть</button>
+                    <!--                    </router-link>-->
+                </td>
             </tr>
         </tbody>
     </table>

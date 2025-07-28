@@ -1,6 +1,6 @@
-import { Commit, Dispatch } from 'vuex';
-import axios from '../../axios/request';
+import { Commit, Dispatch, Getter } from 'vuex';
 import store from '@/store';
+import axios from '../../axios/request';
 
 interface RequestState {
     requests: Array<any>;
@@ -40,14 +40,16 @@ export default {
     },
     actions: {
         async create(
-            { commit, dispatch }: { commit: Commit; dispatch: Dispatch },
+            {
+                commit,
+                dispatch,
+                getters,
+                rootGetters,
+            }: { dispatch: Dispatch; commit: Commit; getters: any; rootGetters: any },
             payload: IPayload,
         ) {
             try {
-                // console.log(payload);
-                // const token = store.getters['auth/token'];
-                const token = localStorage.getItem('jwt-token') || null;
-                // console.log('token', token);
+                const token = rootGetters['auth/getToken'];
                 const { data } = await axios.post(`/requests.json?auth=${token}`, {
                     fio: payload.fio,
                     phone: payload.phone,
@@ -64,6 +66,34 @@ export default {
                     },
                     { root: true },
                 );
+            } catch (e) {
+                dispatch(
+                    'setMessage',
+                    {
+                        value: 'Заявка не створена',
+                        type: 'danger',
+                    },
+                    { root: true },
+                );
+            }
+        },
+        async load({
+            commit,
+            dispatch,
+            getters,
+            rootGetters,
+        }: {
+            dispatch: Dispatch;
+            commit: Commit;
+            getters: any;
+            rootGetters: any;
+        }) {
+            try {
+                const token = rootGetters['auth/getToken'];
+                const { data } = await axios.get(`/requests.json?auth=${token}`);
+                console.log(data);
+                const requests = Object.keys(data).map((id) => ({ ...data[id], id }));
+                commit('setRequests', requests);
             } catch (e) {
                 dispatch(
                     'setMessage',

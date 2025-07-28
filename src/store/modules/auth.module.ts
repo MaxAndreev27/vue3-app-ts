@@ -19,7 +19,7 @@ export default {
         token: localStorage.getItem(TOKEN_KEY) || null,
     },
     getters: {
-        token(state: AuthState) {
+        getToken(state: AuthState) {
             return state.token;
         },
         isAuthenticated(state: AuthState) {
