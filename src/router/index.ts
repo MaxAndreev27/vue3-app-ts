@@ -32,6 +32,15 @@ const routes: Array<RouteRecordRaw> = [
             auth: false,
         },
     },
+    {
+        path: '/request/:id',
+        name: 'Request',
+        component: () => import('../views/RequestView.vue'),
+        meta: {
+            layout: MainLayout,
+            auth: false,
+        },
+    },
 ];
 
 const router = createRouter({

@@ -77,7 +77,6 @@ export default {
         async load({
             commit,
             dispatch,
-
             rootGetters,
         }: {
             dispatch: Dispatch;
@@ -94,6 +93,29 @@ export default {
                     'setMessage',
                     {
                         value: 'Заявка не створена',
+                        type: 'danger',
+                    },
+                    { root: true },
+                );
+            }
+        },
+        async loadOne(
+            {
+                commit,
+                dispatch,
+                rootGetters,
+            }: { dispatch: Dispatch; commit: Commit; rootGetters: any },
+            id: string,
+        ) {
+            try {
+                const token = rootGetters['auth/getToken'];
+                const { data } = await axios.get(`/requests/${id}.json?auth=${token}`);
+                return data;
+            } catch (e) {
+                dispatch(
+                    'setMessage',
+                    {
+                        value: e,
                         type: 'danger',
                     },
                     { root: true },

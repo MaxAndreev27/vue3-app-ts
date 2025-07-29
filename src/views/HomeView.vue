@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import AppPage from '@/components/ui/AppPage.vue';
 import RequestTable from '@/components/request/RequestTable.vue';
 import AppModal from '@/components/ui/AppModal.vue';
