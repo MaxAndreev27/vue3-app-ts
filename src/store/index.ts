@@ -10,6 +10,7 @@ if (process.env.NODE_ENV === 'development') {
 
 interface GlobalState {
     message: string | null;
+    sidebar: boolean;
 }
 
 export default createStore({
@@ -20,6 +21,7 @@ export default createStore({
     },
     state: {
         message: null,
+        sidebar: false,
     },
     getters: {},
     mutations: {
@@ -28,6 +30,12 @@ export default createStore({
         },
         clearMessage(state: GlobalState) {
             state.message = null;
+        },
+        openSidebar(state) {
+            state.sidebar = true;
+        },
+        closeSidebar(state) {
+            state.sidebar = false;
         },
     },
     actions: {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, watch } from 'vue';
 
 const props = defineProps({
     type: {
@@ -31,6 +31,11 @@ const textMap: IBadge = {
     done: 'Завершен',
     pending: 'Выполняется',
 };
+
+watch(props, (val) => {
+    className.value = classesMap[val.type as keyof IBadge];
+    text.value = textMap[val.type as keyof IBadge];
+});
 
 const className = ref(classesMap[props.type as keyof IBadge]);
 const text = ref(textMap[props.type as keyof IBadge]);

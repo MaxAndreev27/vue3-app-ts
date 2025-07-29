@@ -9,6 +9,10 @@ const logout = () => {
     store.commit('auth/logout');
     router.push('/auth');
 };
+
+const openSidebar = () => {
+    store.commit('openSidebar');
+};
 </script>
 
 <template>
@@ -17,7 +21,7 @@ const logout = () => {
         <ul class="navbar-menu">
             <li><router-link to="/">Заявки</router-link></li>
             <li><router-link to="/help">Допомога</router-link></li>
-            <li><a href="#">Повідомлення</a></li>
+            <li><a href="#" @click.prevent="openSidebar">Повідомлення</a></li>
             <li><a href="#" @click.prevent="logout">Вихід</a></li>
         </ul>
     </nav>

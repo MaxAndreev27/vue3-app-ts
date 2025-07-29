@@ -13,10 +13,11 @@ export enum TaskStatus {
 }
 
 export interface IPayload {
-    fio: string;
-    phone: string;
-    amount: number;
-    status: TaskStatus;
+    id?: string;
+    fio?: string;
+    phone?: string;
+    amount?: number;
+    status?: TaskStatus;
 }
 
 export default {
@@ -100,17 +101,65 @@ export default {
             }
         },
         async loadOne(
-            {
-                commit,
-                dispatch,
-                rootGetters,
-            }: { dispatch: Dispatch; commit: Commit; rootGetters: any },
+            { dispatch, rootGetters }: { dispatch: Dispatch; commit: Commit; rootGetters: any },
             id: string,
         ) {
             try {
                 const token = rootGetters['auth/getToken'];
                 const { data } = await axios.get(`/requests/${id}.json?auth=${token}`);
                 return data;
+            } catch (e) {
+                dispatch(
+                    'setMessage',
+                    {
+                        value: e,
+                        type: 'danger',
+                    },
+                    { root: true },
+                );
+            }
+        },
+        async remove(
+            { dispatch, rootGetters }: { dispatch: Dispatch; commit: Commit; rootGetters: any },
+            id: string,
+        ) {
+            try {
+                const token = rootGetters['auth/getToken'];
+                await axios.delete(`/requests/${id}.json?auth=${token}`);
+                dispatch(
+                    'setMessage',
+                    {
+                        value: 'Заявка видалена',
+                        type: 'primary',
+                    },
+                    { root: true },
+                );
+            } catch (e) {
+                dispatch(
+                    'setMessage',
+                    {
+                        value: e,
+                        type: 'danger',
+                    },
+                    { root: true },
+                );
+            }
+        },
+        async update(
+            { dispatch, rootGetters }: { dispatch: Dispatch; commit: Commit; rootGetters: any },
+            request: IPayload,
+        ) {
+            try {
+                const token = rootGetters['auth/getToken'];
+                await axios.put(`/requests/${request.id}.json?auth=${token}`, request);
+                dispatch(
+                    'setMessage',
+                    {
+                        value: 'Заявка оновлена',
+                        type: 'primary',
+                    },
+                    { root: true },
+                );
             } catch (e) {
                 dispatch(
                     'setMessage',

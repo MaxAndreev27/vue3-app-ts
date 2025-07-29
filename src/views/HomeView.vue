@@ -10,13 +10,13 @@ import RequestFilter from '@/components/request/RequestFilter.vue';
 import { IPayload } from '@/store/modules/request.module';
 
 interface IFilter {
-    name: string;
-    status: string;
+    name?: string;
+    status?: string;
 }
 
 const modal = ref(false);
 const loading = ref(false);
-const filter = ref<IFilter>({ name: '', status: '' });
+const filter = ref<IFilter>({});
 
 const close = () => {
     modal.value = false;
@@ -25,7 +25,7 @@ const store = useStore();
 const requests = computed(() =>
     store.getters['request/requests']
         .filter((request: IPayload) => {
-            if (filter.value.name) {
+            if (filter.value.name && request.fio) {
                 return request.fio.includes(filter.value.name);
             }
             return request;
