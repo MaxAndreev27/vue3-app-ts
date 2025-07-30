@@ -2,7 +2,7 @@
 import { defineProps } from 'vue';
 import { currency } from '@/utils/currency';
 import AppStatus from '@/components/ui/AppStatus.vue';
-const props = defineProps({
+defineProps({
     requests: {
         type: Array,
     },

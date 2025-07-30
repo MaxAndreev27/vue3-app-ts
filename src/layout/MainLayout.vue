@@ -7,8 +7,8 @@ import TheSidebar from '@/components/TheSidebar.vue';
 <template>
     <TheNavbar />
     <TheSidebar />
-    <AppMessage />
     <div class="container with-nav">
+        <AppMessage />
         <router-view />
     </div>
 </template>

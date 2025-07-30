@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue';
-const props = defineProps({
+defineProps({
     title: {
         type: String,
     },
 });
-const emit = defineEmits(['close']);
+defineEmits(['close']);
 </script>
 
 <template>

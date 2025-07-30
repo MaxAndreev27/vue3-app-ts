@@ -19,8 +19,8 @@ if (route.query.message) {
 </script>
 
 <template>
-    <AppMessage />
     <div class="container">
+        <AppMessage />
         <router-view />
     </div>
 </template>

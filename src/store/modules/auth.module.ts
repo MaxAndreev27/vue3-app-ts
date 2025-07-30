@@ -51,7 +51,7 @@ export default {
                 commit('setToken', data.idToken);
                 commit('clearMessage', null, { root: true });
             } catch (e) {
-                dispatch(
+                await dispatch(
                     'setMessage',
                     {
                         value: ERROR_CODES.INVALID_LOGIN_CREDENTIALS,

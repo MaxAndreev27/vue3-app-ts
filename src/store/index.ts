@@ -13,6 +13,13 @@ interface GlobalState {
     sidebar: boolean;
 }
 
+export interface RootGetters {
+    'auth/getToken': string;
+    'auth/isAuthenticated': string;
+    'request/requests': string;
+    // add other getters if needed
+}
+
 export default createStore({
     plugins,
     modules: {

@@ -7,7 +7,7 @@ import RequestModal from '@/components/request/RequestModal.vue';
 import { useStore } from 'vuex';
 import AppLoader from '@/components/ui/AppLoader.vue';
 import RequestFilter from '@/components/request/RequestFilter.vue';
-import { IPayload } from '@/store/modules/request.module';
+import { IRequest } from '@/store/modules/request.module';
 
 interface IFilter {
     name?: string;
@@ -18,19 +18,16 @@ const modal = ref(false);
 const loading = ref(false);
 const filter = ref<IFilter>({});
 
-const close = () => {
-    modal.value = false;
-};
 const store = useStore();
 const requests = computed(() =>
     store.getters['request/requests']
-        .filter((request: IPayload) => {
+        .filter((request: IRequest) => {
             if (filter.value.name && request.fio) {
                 return request.fio.includes(filter.value.name);
             }
             return request;
         })
-        .filter((request: IPayload) => {
+        .filter((request: IRequest) => {
             if (filter.value.status) {
                 return filter.value.status === request.status;
             }

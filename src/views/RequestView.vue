@@ -6,12 +6,12 @@ import { useStore } from 'vuex';
 import AppLoader from '@/components/ui/AppLoader.vue';
 import { currency } from '@/utils/currency';
 import AppStatus from '@/components/ui/AppStatus.vue';
-import { IPayload } from '@/store/modules/request.module';
+import { IRequest } from '@/store/modules/request.module';
 
 const router = useRouter();
 
 const store = useStore();
-const request = ref<IPayload>({});
+const request = ref<IRequest>({});
 const route = useRoute();
 const id = route.params.id;
 const loading = ref(true);

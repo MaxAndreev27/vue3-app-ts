@@ -6,13 +6,15 @@ const store = useStore();
 const message = computed(() => store.state.message);
 
 enum TITLE_MAP {
-    primary = 'Успіх!' as any,
-    danger = 'Помилка!' as any,
-    warning = 'Увага!' as any,
+    primary = 'Успіх!',
+    danger = 'Помилка!',
+    warning = 'Увага!',
 }
+type TitleKey = keyof typeof TITLE_MAP;
+const titleType: TitleKey = message.value?.type;
 
 const title = computed(() => {
-    return message.value ? TITLE_MAP[message.value.type] : null;
+    return message.value ? TITLE_MAP[titleType] : null;
 });
 
 function close() {

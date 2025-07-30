@@ -1,9 +1,6 @@
 import { Commit, Dispatch } from 'vuex';
 import axios from '../../axios/request';
-
-interface RequestState {
-    requests: Array<any>;
-}
+import { RootGetters } from '@/store';
 
 export enum TaskStatus {
     DONE = 'done',
@@ -12,12 +9,16 @@ export enum TaskStatus {
     PENDING = 'pending',
 }
 
-export interface IPayload {
+export interface IRequest {
     id?: string;
     fio?: string;
     phone?: string;
     amount?: number;
     status?: TaskStatus;
+}
+
+interface RequestState {
+    requests: Array<IRequest>;
 }
 
 export default {
@@ -31,10 +32,10 @@ export default {
         },
     },
     mutations: {
-        setRequests(state: RequestState, requests: Array<IPayload>) {
+        setRequests(state: RequestState, requests: Array<IRequest>) {
             state.requests = requests;
         },
-        addRequest(state: RequestState, request: Array<IPayload>) {
+        addRequest(state: RequestState, request: IRequest) {
             state.requests.push(request);
         },
     },
@@ -44,8 +45,8 @@ export default {
                 commit,
                 dispatch,
                 rootGetters,
-            }: { dispatch: Dispatch; commit: Commit; rootGetters: any },
-            payload: IPayload,
+            }: { dispatch: Dispatch; commit: Commit; rootGetters: RootGetters },
+            payload: IRequest,
         ) {
             try {
                 const token = rootGetters['auth/getToken'];
@@ -56,7 +57,7 @@ export default {
                     status: payload.status,
                 });
                 commit('addRequest', { ...payload, id: data.name });
-                dispatch(
+                await dispatch(
                     'setMessage',
                     {
                         value: 'Заявка створена',
@@ -65,7 +66,7 @@ export default {
                     { root: true },
                 );
             } catch (e) {
-                dispatch(
+                await dispatch(
                     'setMessage',
                     {
                         value: 'Заявка не створена',
@@ -82,7 +83,7 @@ export default {
         }: {
             dispatch: Dispatch;
             commit: Commit;
-            rootGetters: any;
+            rootGetters: RootGetters;
         }) {
             try {
                 const token = rootGetters['auth/getToken'];
@@ -90,7 +91,7 @@ export default {
                 const requests = Object.keys(data).map((id) => ({ ...data[id], id }));
                 commit('setRequests', requests);
             } catch (e) {
-                dispatch(
+                await dispatch(
                     'setMessage',
                     {
                         value: 'Заявка не створена',
@@ -101,7 +102,10 @@ export default {
             }
         },
         async loadOne(
-            { dispatch, rootGetters }: { dispatch: Dispatch; commit: Commit; rootGetters: any },
+            {
+                dispatch,
+                rootGetters,
+            }: { dispatch: Dispatch; commit: Commit; rootGetters: RootGetters },
             id: string,
         ) {
             try {
@@ -109,7 +113,7 @@ export default {
                 const { data } = await axios.get(`/requests/${id}.json?auth=${token}`);
                 return data;
             } catch (e) {
-                dispatch(
+                await dispatch(
                     'setMessage',
                     {
                         value: e,
@@ -120,13 +124,16 @@ export default {
             }
         },
         async remove(
-            { dispatch, rootGetters }: { dispatch: Dispatch; commit: Commit; rootGetters: any },
+            {
+                dispatch,
+                rootGetters,
+            }: { dispatch: Dispatch; commit: Commit; rootGetters: RootGetters },
             id: string,
         ) {
             try {
                 const token = rootGetters['auth/getToken'];
                 await axios.delete(`/requests/${id}.json?auth=${token}`);
-                dispatch(
+                await dispatch(
                     'setMessage',
                     {
                         value: 'Заявка видалена',
@@ -135,7 +142,7 @@ export default {
                     { root: true },
                 );
             } catch (e) {
-                dispatch(
+                await dispatch(
                     'setMessage',
                     {
                         value: e,
@@ -146,13 +153,16 @@ export default {
             }
         },
         async update(
-            { dispatch, rootGetters }: { dispatch: Dispatch; commit: Commit; rootGetters: any },
-            request: IPayload,
+            {
+                dispatch,
+                rootGetters,
+            }: { dispatch: Dispatch; commit: Commit; rootGetters: RootGetters },
+            request: IRequest,
         ) {
             try {
                 const token = rootGetters['auth/getToken'];
                 await axios.put(`/requests/${request.id}.json?auth=${token}`, request);
-                dispatch(
+                await dispatch(
                     'setMessage',
                     {
                         value: 'Заявка оновлена',
@@ -161,7 +171,7 @@ export default {
                     { root: true },
                 );
             } catch (e) {
-                dispatch(
+                await dispatch(
                     'setMessage',
                     {
                         value: e,
