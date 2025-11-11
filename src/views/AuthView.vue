@@ -45,12 +45,24 @@ const onSubmit = handleSubmit(async (values) => {
         <h1>Вхід в систему</h1>
         <div :class="['form-control', { invalid: eError }]">
             <label for="email">Email</label>
-            <input type="email" id="email" v-model="email" @blur="eBlur" />
+            <input
+                placeholder="user@gmail.com"
+                type="email"
+                id="email"
+                v-model="email"
+                @blur="eBlur"
+            />
             <small v-if="eError">{{ eError }}</small>
         </div>
         <div :class="['form-control', { invalid: pError }]">
             <label for="password">Password</label>
-            <input type="password" id="password" v-model="password" @blur="pBlur" />
+            <input
+                placeholder="123456"
+                type="password"
+                id="password"
+                v-model="password"
+                @blur="pBlur"
+            />
             <small v-if="pError">{{ pError }}</small>
         </div>
         <button class="btn primary" type="submit" :disabled="isSubmitting || isTooManyAttempts">
