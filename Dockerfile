@@ -16,6 +16,12 @@ ENV NODE_ENV="production"
 # Throw-away build stage to reduce size of final image
 FROM base AS build
 
+ARG VUE_APP_FIREBASE_API_KEY
+ENV VUE_APP_FIREBASE_API_KEY=$VUE_APP_FIREBASE_API_KEY
+
+ARG VUE_APP_FB_URL
+ENV VUE_APP_FB_URL=$VUE_APP_FB_URL
+
 # Install packages needed to build node modules
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
