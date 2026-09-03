@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+    - name: Security vulnerability
+      url: https://github.com/MaxAndreev27/vue3-app-ts/security/advisories/new
+      about: Report security vulnerabilities privately. Do not use public issues.
+    - name: Support and questions
+      url: https://github.com/MaxAndreev27/vue3-app-ts/discussions
+      about: Ask usage questions and discuss ideas with the community.
